@@ -1,5 +1,7 @@
 "use client";
 
+import { asset } from '@/lib/asset';
+
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useTimerStore } from "@/store/timer.store";
@@ -75,7 +77,7 @@ export function HomeCards() {
     >
       {/* Notification pill — full width */}
       <GlassCard className="w-full flex-row items-center gap-3 rounded-full px-4 py-3 flex">
-        <IconWrap src="/figma-assets/6fbbe58b9e2abe6773e8a9a168fb615c45b3e4e2.svg" />
+        <IconWrap src={asset("/figma-assets/6fbbe58b9e2abe6773e8a9a168fb615c45b3e4e2.svg")} />
         <p className="text-body-sm-med text-m2-text-primary flex-1">
           7 dager til slutt — du er klar!
         </p>
@@ -84,7 +86,7 @@ export function HomeCards() {
       {/* Countdown card */}
       <GlassCard className="flex flex-col justify-between" style={{ flex: "1 0 160px", height: 156 }}>
         <div className="flex items-center gap-2">
-          <IconWrap src="/figma-assets/f239ebbe4745f8a38ad08845145e200552274e47.svg" />
+          <IconWrap src={asset("/figma-assets/f239ebbe4745f8a38ad08845145e200552274e47.svg")} />
           <span className="text-body-sm-med text-m2-text-secondary">Nedtelling</span>
         </div>
         <div>
@@ -96,7 +98,7 @@ export function HomeCards() {
       {/* Savings card */}
       <GlassCard className="flex flex-col justify-between" style={{ flex: "1 0 160px", height: 156 }}>
         <div className="flex items-center gap-2">
-          <IconWrap src="/figma-assets/03ce0458e9c800a63cc5d1d22fa7f86edd09c97a.svg" />
+          <IconWrap src={asset("/figma-assets/03ce0458e9c800a63cc5d1d22fa7f86edd09c97a.svg")} />
           <span className="text-body-sm-med text-m2-text-secondary">Sparing</span>
         </div>
         <div>
@@ -107,13 +109,13 @@ export function HomeCards() {
 
       {/* Support chat pill */}
       <GlassCard className="w-full flex-row items-center gap-3 rounded-full px-4 py-3 flex">
-        <IconWrap src="/figma-assets/ade11edda82cfa2c8283da0dfe43aa50397f908a.svg" />
+        <IconWrap src={asset("/figma-assets/ade11edda82cfa2c8283da0dfe43aa50397f908a.svg")} />
         <div className="flex-1 min-w-0">
           <p className="text-body-sm-med text-m2-text-primary">Vi er her tirsdager, kl 15–18</p>
           <p className="text-body-sm text-m2-text-secondary truncate">Start en chat når som helst</p>
         </div>
         <img
-          src="/figma-assets/310c220ae9bd18328d8929056e4f74ffb5bd4d68.svg"
+          src={asset("/figma-assets/310c220ae9bd18328d8929056e4f74ffb5bd4d68.svg")}
           width={32} height={32} alt=""
         />
       </GlassCard>
@@ -128,7 +130,7 @@ export function HomeCards() {
         }}
       >
         <div className="flex items-center gap-2">
-          <IconWrap src="/figma-assets/735e92bd37d9ecd58bcffb1a206f01bd2bfaa515.svg" variant="peach" />
+          <IconWrap src={asset("/figma-assets/735e92bd37d9ecd58bcffb1a206f01bd2bfaa515.svg")} variant="peach" />
         </div>
         <div>
           <p className="text-body-lg-med text-m2-text-primary">Krisenummere</p>
@@ -142,7 +144,7 @@ export function HomeCards() {
         style={{ flex: "1 0 150px", height: 164 }}
       >
         <div className="flex items-center gap-2">
-          <IconWrap src="/figma-assets/5d29fe9d43eea2e08e2122122f882c3c9a949634.svg" />
+          <IconWrap src={asset("/figma-assets/5d29fe9d43eea2e08e2122122f882c3c9a949634.svg")} />
         </div>
         <div>
           <p className="text-body-lg-med text-m2-text-primary">12-ukersprogrammet</p>
@@ -152,7 +154,7 @@ export function HomeCards() {
 
       {/* Topics pill */}
       <GlassCard className="w-full flex-row items-center gap-3 rounded-full px-4 py-3 flex">
-        <IconWrap src="/figma-assets/60e140974634945ca66d55e755751f5883f9679e.svg" />
+        <IconWrap src={asset("/figma-assets/60e140974634945ca66d55e755751f5883f9679e.svg")} />
         <p className="text-body-sm-med text-m2-text-primary flex-1">
           Dagens tema: Trigger-situasjoner
         </p>

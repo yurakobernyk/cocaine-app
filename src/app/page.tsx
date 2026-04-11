@@ -1,5 +1,7 @@
 "use client";
 
+import { asset } from '@/lib/asset';
+
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useAppStore } from "@/store/app.store";
@@ -67,15 +69,15 @@ export default function WelcomePage() {
         <span className="text-[15px] font-semibold text-[#1a1a2e]">9:41</span>
         <div className="flex items-center gap-1.5">
           <img
-            src="/figma-assets/a4198387082605f2a8f9d8ad6d1d21e9ed03679f.svg"
+            src={asset("/figma-assets/a4198387082605f2a8f9d8ad6d1d21e9ed03679f.svg")}
             width={19} height={13} alt=""
           />
           <img
-            src="/figma-assets/5f2f33dd898f106cc9bf144bc1aa9d551e751172.svg"
+            src={asset("/figma-assets/5f2f33dd898f106cc9bf144bc1aa9d551e751172.svg")}
             width={17} height={13} alt=""
           />
           <img
-            src="/figma-assets/61b774f95a59e641835654a61344b08c890ba989.svg"
+            src={asset("/figma-assets/61b774f95a59e641835654a61344b08c890ba989.svg")}
             width={27} height={13} alt=""
           />
         </div>

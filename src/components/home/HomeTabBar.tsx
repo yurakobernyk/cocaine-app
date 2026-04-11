@@ -1,5 +1,7 @@
 "use client";
 
+import { asset } from '@/lib/asset';
+
 import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -10,17 +12,17 @@ const tabs: { id: TabId; label: string; icon: string }[] = [
   {
     id: "home",
     label: "Hjem",
-    icon: "/figma-assets/0b207b2de6c724dcb234ad2e5086cebcf653980c.svg",
+    icon: asset("/figma-assets/0b207b2de6c724dcb234ad2e5086cebcf653980c.svg"),
   },
   {
     id: "diary",
     label: "Dagbok",
-    icon: "/figma-assets/48b5d3b5fac4485b433c713d6019fdb3c77e52c2.svg",
+    icon: asset("/figma-assets/48b5d3b5fac4485b433c713d6019fdb3c77e52c2.svg"),
   },
   {
     id: "overview",
     label: "Oversikt",
-    icon: "/figma-assets/d537fca5e6ecf14a6bfe0fd2435cb9d37ecefe27.svg",
+    icon: asset("/figma-assets/d537fca5e6ecf14a6bfe0fd2435cb9d37ecefe27.svg"),
   },
 ];
 
@@ -102,7 +104,7 @@ export function HomeTabBar({ active, onChange }: Props) {
         style={{ background: "#ed3516" }}
       >
         <img
-          src="/figma-assets/5628fd724b87c53d1a2f4f1a7e21929c5ebf91d9.svg"
+          src={asset("/figma-assets/5628fd724b87c53d1a2f4f1a7e21929c5ebf91d9.svg")}
           width={28}
           height={28}
           alt=""

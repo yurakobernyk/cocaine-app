@@ -1,5 +1,7 @@
 "use client";
 
+import { asset } from '@/lib/asset';
+
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HomeHeader } from "@/components/home/HomeHeader";
@@ -42,7 +44,7 @@ export default function M2HomePage() {
     >
       {/* Texture bg */}
       <img
-        src="/figma-assets/16ac817c5a615e8092975a32ba089689b9aec2df.png"
+        src={asset("/figma-assets/16ac817c5a615e8092975a32ba089689b9aec2df.png")}
         alt=""
         aria-hidden
         className="pointer-events-none absolute inset-0 h-full w-full object-cover"
