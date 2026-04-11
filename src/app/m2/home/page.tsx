@@ -57,12 +57,12 @@ export default function M2HomePage() {
         className="absolute inset-0 overflow-y-auto"
         style={{ paddingTop: 200, paddingBottom: 108 }}
       >
-        {/* Greeting */}
-        <div className="px-6 pb-2">
-          <p className="text-[17px] font-semibold text-[#525252]">
+        {/* Greeting — Figma: gap-[4px], px-[24px] py-[16px] */}
+        <div className="flex flex-col gap-1 px-6 py-4">
+          <p className="text-[17px] font-semibold leading-6 text-[#525252]">
             Hei, {profile.name}!
           </p>
-          <h1 className="text-display-lg text-m2-text-primary mt-0.5">
+          <h1 className="text-[34px] font-bold leading-10 tracking-[-0.5px] text-[#151515]">
             Positiv i dag
           </h1>
         </div>

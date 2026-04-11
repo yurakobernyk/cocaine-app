@@ -120,7 +120,7 @@
   .text-body-lg-med { @apply text-[16px] font-medium  leading-[22px]; }
   .text-body-sm     { @apply text-[14px] font-normal  leading-[20px]; }
   .text-body-sm-med { @apply text-[14px] font-medium  leading-[20px]; }
-  .text-label-xs    { @apply text-[11px] font-medium  tracking-[0.3px] leading-[14px]; }
+  .text-label-xs    { @apply text-[11px] font-medium  tracking-[0.3px] leading-[16px]; }
 }
 
 /* ─── iOS-style glass card utility ──────────────────────────────────── */

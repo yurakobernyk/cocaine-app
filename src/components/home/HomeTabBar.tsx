@@ -57,12 +57,13 @@ export function HomeTabBar({ active, onChange }: Props) {
   }, [active]);
 
   return (
-    <div className="absolute inset-x-0 bottom-0 z-40 flex items-center gap-4 px-5 pb-7 pt-3">
-      {/* Pill tab row */}
+    <div className="absolute inset-x-0 bottom-0 z-40 flex items-center gap-8 px-8 pb-6 pt-4">
+      {/* Pill tab row — Figma: bg white/80, blur 15px, shadow */}
       <div
         ref={containerRef}
         role="tablist"
-        className="relative flex flex-1 items-center rounded-full bg-white/60 p-1 shadow-xl backdrop-blur-2xl"
+        className="relative flex flex-1 items-center rounded-full p-1 shadow-[0px_8px_40px_0px_rgba(0,0,0,0.12)]"
+        style={{ background: "rgba(255,255,255,0.80)", backdropFilter: "blur(15px)" }}
       >
         {/* Sliding indicator */}
         <motion.div
@@ -81,7 +82,7 @@ export function HomeTabBar({ active, onChange }: Props) {
             onClick={() => onChange(tab.id)}
             className={cn(
               "relative z-10 flex flex-1 flex-col items-center gap-0.5 py-2 transition-colors",
-              active === tab.id ? "text-[#0a7268]" : "text-[#7a9e94]"
+              active === tab.id ? "text-[#0a7268]" : "text-[#151515]"
             )}
           >
             <motion.div
