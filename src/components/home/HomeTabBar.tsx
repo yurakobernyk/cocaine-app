@@ -1,28 +1,38 @@
 "use client";
 
-import { asset } from '@/lib/asset';
-
 import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { asset } from "@/lib/asset";
+import { FigmaIcon } from "@/components/ui/figma-icon";
 import { cn } from "@/lib/utils";
 
 export type TabId = "home" | "diary" | "overview";
 
-const tabs: { id: TabId; label: string; icon: string }[] = [
+/* ─── Tab definitions ────────────────────────────────────────────────────── */
+const TABS: { id: TabId; label: string; icon: string; w: number; h: number }[] = [
   {
     id: "home",
     label: "Hjem",
-    icon: asset("/figma-assets/0b207b2de6c724dcb234ad2e5086cebcf653980c.svg"),
+    icon: asset("/figma-assets/tab-home.svg"),
+    // viewBox 23.0×23.86 — render at natural proportions inside 28×28 space
+    w: 23,
+    h: 24,
   },
   {
     id: "diary",
     label: "Dagbok",
-    icon: asset("/figma-assets/48b5d3b5fac4485b433c713d6019fdb3c77e52c2.svg"),
+    icon: asset("/figma-assets/tab-diary.svg"),
+    // viewBox 23×25.33
+    w: 22,
+    h: 24,
   },
   {
     id: "overview",
     label: "Oversikt",
-    icon: asset("/figma-assets/d537fca5e6ecf14a6bfe0fd2435cb9d37ecefe27.svg"),
+    icon: asset("/figma-assets/tab-overview.svg"),
+    // viewBox 25.35×25.33 — nearly square
+    w: 24,
+    h: 24,
   },
 ];
 
@@ -41,74 +51,91 @@ interface Props {
 export function HomeTabBar({ active, onChange }: Props) {
   const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const containerRef = useRef<HTMLDivElement>(null);
-  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
+  const [indicator, setIndicator] = useState({ left: 0, width: 0 });
 
+  /* Recompute sliding pill position whenever active tab changes */
   useEffect(() => {
     const btn = tabRefs.current[active];
-    const container = containerRef.current;
-    if (!btn || !container) return;
-
-    const cRect = container.getBoundingClientRect();
+    const wrap = containerRef.current;
+    if (!btn || !wrap) return;
+    const wRect = wrap.getBoundingClientRect();
     const bRect = btn.getBoundingClientRect();
-    setIndicatorStyle({
-      left: bRect.left - cRect.left,
-      width: bRect.width,
-    });
+    setIndicator({ left: bRect.left - wRect.left, width: bRect.width });
   }, [active]);
 
   return (
+    /*
+     * Figma: absolute bottom-0, gap-[32px] px-[32px] pb-[24px] pt-[16px]
+     * Tab bar container + SOS button row
+     */
     <div className="absolute inset-x-0 bottom-0 z-40 flex items-center gap-8 px-8 pb-6 pt-4">
-      {/* Pill tab row — Figma: bg white/80, blur 15px, shadow */}
+
+      {/* ── Pill tab row ── */}
       <div
         ref={containerRef}
         role="tablist"
-        className="relative flex flex-1 items-center rounded-full p-1 shadow-[0px_8px_40px_0px_rgba(0,0,0,0.12)]"
-        style={{ background: "rgba(255,255,255,0.80)", backdropFilter: "blur(15px)" }}
+        aria-label="Navigasjon"
+        /* Figma: backdrop-blur-[15px], bg white/80, shadow */
+        className="relative flex flex-1 items-center rounded-full p-1"
+        style={{
+          background: "rgba(255,255,255,0.80)",
+          backdropFilter: "blur(15px)",
+          WebkitBackdropFilter: "blur(15px)",
+          boxShadow: "0px 8px 40px 0px rgba(0,0,0,0.12)",
+        }}
       >
-        {/* Sliding indicator */}
+        {/* Sliding white pill indicator */}
         <motion.div
           className="absolute top-1 bottom-1 rounded-full bg-white shadow-md"
-          animate={indicatorStyle}
+          animate={indicator}
           transition={spring}
-          style={{ left: indicatorStyle.left, width: indicatorStyle.width }}
+          style={indicator}
         />
 
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            ref={(el) => { tabRefs.current[tab.id] = el; }}
-            role="tab"
-            aria-selected={active === tab.id}
-            onClick={() => onChange(tab.id)}
-            className={cn(
-              "relative z-10 flex flex-1 flex-col items-center gap-0.5 py-2 transition-colors",
-              active === tab.id ? "text-[#0a7268]" : "text-[#151515]"
-            )}
-          >
-            <motion.div
-              whileTap={{ scale: 0.82 }}
-              transition={spring}
+        {TABS.map((tab) => {
+          const isActive = active === tab.id;
+          return (
+            <button
+              key={tab.id}
+              ref={(el) => { tabRefs.current[tab.id] = el; }}
+              role="tab"
+              aria-selected={isActive}
+              onClick={() => onChange(tab.id)}
+              className={cn(
+                "relative z-10 flex flex-1 flex-col items-center gap-0.5 py-1.5 transition-colors",
+                isActive ? "text-[#0a7268]" : "text-[#151515]"
+              )}
             >
-              <img src={tab.icon} width={28} height={28} alt="" />
-            </motion.div>
-            <span className="text-label-xs">{tab.label}</span>
-          </button>
-        ))}
+              {/* Tab icon — 28×28 container, proportional icon inside */}
+              <div className="flex h-7 w-7 items-center justify-center">
+                <FigmaIcon src={tab.icon} width={tab.w} height={tab.h} />
+              </div>
+              {/* Label XS — 11px Medium, tracking 0.3px */}
+              <span className="text-[11px] font-medium leading-4 tracking-[0.3px]">
+                {tab.label}
+              </span>
+            </button>
+          );
+        })}
       </div>
 
-      {/* SOS button */}
+      {/* ── SOS button ── */}
+      {/*
+       * Figma: size-[60px], bg #ed3516, p-[4px], rounded-full
+       * Icon: 28×28 inside, viewBox 18.33×18.33 (near square)
+       */}
       <motion.button
         aria-label="SOS — Kriseknapp"
         whileTap={{ scale: 0.88 }}
         transition={spring}
-        className="flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-full shadow-lg"
-        style={{ background: "#ed3516" }}
+        className="flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-full shadow-[0px_8px_40px_0px_rgba(0,0,0,0.12)]"
+        style={{ background: "#ed3516", padding: 4 }}
       >
-        <img
-          src={asset("/figma-assets/5628fd724b87c53d1a2f4f1a7e21929c5ebf91d9.svg")}
+        {/* SOS plus icon — viewBox 18.33×18.33 */}
+        <FigmaIcon
+          src={asset("/figma-assets/sos-plus.svg")}
           width={28}
           height={28}
-          alt=""
         />
       </motion.button>
     </div>

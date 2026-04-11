@@ -4,8 +4,9 @@
     {
       "name": "stoette-next",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--", "--port", "3457"],
-      "port": 3457
+      "runtimeArgs": ["run", "dev"],
+      "port": 3456,
+      "autoPort": true
     }
   ]
 }

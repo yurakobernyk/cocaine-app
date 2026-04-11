@@ -44,7 +44,7 @@ export default function M2HomePage() {
     >
       {/* Texture bg */}
       <img
-        src={asset("/figma-assets/16ac817c5a615e8092975a32ba089689b9aec2df.png")}
+        src={asset("/figma-assets/texture-bg.png")}
         alt=""
         aria-hidden
         className="pointer-events-none absolute inset-0 h-full w-full object-cover"
@@ -105,11 +105,13 @@ export default function M2HomePage() {
         </AnimatePresence>
       </div>
 
-      {/* Header on top */}
+      {/* Header — pointer-events-none wrapper, buttons inside re-enable */}
       <HomeHeader />
 
-      {/* Tab bar on bottom */}
-      <HomeTabBar active={activeTab} onChange={handleTabChange} />
+      {/* Tab bar — interactive overlay on bottom */}
+      <div className="pointer-events-auto">
+        <HomeTabBar active={activeTab} onChange={handleTabChange} />
+      </div>
     </div>
   );
 }
