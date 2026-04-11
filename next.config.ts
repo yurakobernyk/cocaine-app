@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 import withPWA from "@ducanh2912/next-pwa";
 
 const isDev = process.env.NODE_ENV === "development";
-const repo = "stoette-next";
+const repo = "cocaine-app";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
