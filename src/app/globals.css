@@ -4,127 +4,144 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ─── Støtte Design Tokens ───────────────────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  /* Fonts */
+  --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --font-heading: var(--font-inter);
+
+  /* Radius scale */
+  --radius-sm:   calc(var(--radius) * 0.6);
+  --radius-md:   calc(var(--radius) * 0.8);
+  --radius-lg:   var(--radius);
+  --radius-xl:   calc(var(--radius) * 1.4);
+  --radius-2xl:  calc(var(--radius) * 1.8);
+  --radius-3xl:  calc(var(--radius) * 2.2);
+  --radius-4xl:  calc(var(--radius) * 2.6);
+  --radius-pill: 999px;
+
+  /* Shadcn mapped tokens */
+  --color-background:              var(--background);
+  --color-foreground:              var(--foreground);
+  --color-card:                    var(--card);
+  --color-card-foreground:         var(--card-foreground);
+  --color-popover:                 var(--popover);
+  --color-popover-foreground:      var(--popover-foreground);
+  --color-primary:                 var(--primary);
+  --color-primary-foreground:      var(--primary-foreground);
+  --color-secondary:               var(--secondary);
+  --color-secondary-foreground:    var(--secondary-foreground);
+  --color-muted:                   var(--muted);
+  --color-muted-foreground:        var(--muted-foreground);
+  --color-accent:                  var(--accent);
+  --color-accent-foreground:       var(--accent-foreground);
+  --color-destructive:             var(--destructive);
+  --color-border:                  var(--border);
+  --color-input:                   var(--input);
+  --color-ring:                    var(--ring);
+
+  /* ── Module 2 (Jevnlig) palette ── */
+  --color-m2-bg:             #eef8ef;
+  --color-m2-surface:        #b2e8d4;
+  --color-m2-text-primary:   #0e1e18;
+  --color-m2-text-secondary: #2a5040;
+  --color-m2-accent:         #0a7268;
+
+  /* ── Crisis ── */
+  --color-crisis-border:   #f4a090;
+  --color-crisis-icon-bg:  #ffc8be;
+  --color-crisis-fill:     #d84830;
+  --color-sos-bg:          #ed3516;
+
+  /* ── Default theme (Fjordvann) ── */
+  --color-primary-500:  #3C8AAC;
+  --color-critical:     #C04428;
+  --color-success:      #1A7040;
 }
 
+/* ─── Root: Støtte light theme ───────────────────────────────────────── */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --background:            #eef8ef;
+  --foreground:            #0e1e18;
+  --card:                  rgba(255 255 255 / 0.55);
+  --card-foreground:       #0e1e18;
+  --popover:               #ffffff;
+  --popover-foreground:    #0e1e18;
+  --primary:               #0a7268;
+  --primary-foreground:    #ffffff;
+  --secondary:             #b2e8d4;
+  --secondary-foreground:  #0e1e18;
+  --muted:                 #d4eee4;
+  --muted-foreground:      #2a5040;
+  --accent:                #b2e8d4;
+  --accent-foreground:     #0e1e18;
+  --destructive:           #C04428;
+  --border:                rgba(14 30 24 / 0.08);
+  --input:                 rgba(14 30 24 / 0.08);
+  --ring:                  #0a7268;
+  --radius:                1rem;
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
+/* ─── Base ───────────────────────────────────────────────────────────── */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
+
   html {
-    @apply font-sans;
+    /* Prevent overscroll bounce on the root; each panel handles its own scroll */
+    overscroll-behavior: none;
+    -webkit-text-size-adjust: 100%;
   }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    overscroll-behavior: none;
+    /* iOS safe area */
+    padding-top: env(safe-area-inset-top);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+  }
+
+  /* Mobile viewport fix */
+  #__next,
+  main {
+    min-height: 100dvh;
+  }
+}
+
+/* ─── Typography scale (matches Figma) ──────────────────────────────── */
+@layer base {
+  .text-display-lg  { @apply text-[34px] font-bold   tracking-[-0.5px] leading-[40px]; }
+  .text-title-lg    { @apply text-[17px] font-semibold leading-[22px]; }
+  .text-body-lg     { @apply text-[16px] font-normal  leading-[22px]; }
+  .text-body-lg-med { @apply text-[16px] font-medium  leading-[22px]; }
+  .text-body-sm     { @apply text-[14px] font-normal  leading-[20px]; }
+  .text-body-sm-med { @apply text-[14px] font-medium  leading-[20px]; }
+  .text-label-xs    { @apply text-[11px] font-medium  tracking-[0.3px] leading-[14px]; }
+}
+
+/* ─── iOS-style glass card utility ──────────────────────────────────── */
+@layer components {
+  .glass-card {
+    background: rgba(255 255 255 / 0.5);
+    backdrop-filter: blur(15px) saturate(1.4);
+    -webkit-backdrop-filter: blur(15px) saturate(1.4);
+    border: 1px solid rgba(255 255 255 / 0.35);
+    box-shadow: 0 8px 40px rgba(0 0 0 / 0.08);
+  }
+
+  /* Progressive blur header (Apple iOS 26 style) */
+  .blur-header {
+    backdrop-filter: blur(28px) saturate(1.6) brightness(1.02);
+    -webkit-backdrop-filter: blur(28px) saturate(1.6) brightness(1.02);
+    mask-image: linear-gradient(to bottom, black 62%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 62%, transparent 100%);
+  }
+
+  /* Icon circle wrappers */
+  .icon-circle-green { @apply flex items-center justify-center rounded-full bg-m2-surface w-8 h-8 shrink-0; }
+  .icon-circle-peach { @apply flex items-center justify-center rounded-full bg-crisis-icon-bg w-8 h-8 shrink-0; }
 }
