@@ -6,6 +6,20 @@ import { useAppStore } from "@/store/app.store";
 import type { Module } from "@/store/app.store";
 import { asset } from "@/lib/asset";
 
+// Figma assets — exact hashes from Figma MCP
+const CHEVRON = asset("/figma-assets/181f97e23de90958389b7451641d422205fc8053.svg");
+
+// Module list icons (icon containers)
+const ICONS = {
+  // Row 1 — peach — 3-dots scatter icon
+  ellipseDots: asset("/figma-assets/icon-ellipse-dots.svg"),
+  ellipseTop:  asset("/figma-assets/icon-ellipse-top.svg"),
+  // Row 2 — teal — connected dots icon
+  groupDots:   asset("/figma-assets/icon-group-dots.svg"),
+  // Row 3 — blue — single dot icon
+  ellipseSingle: asset("/figma-assets/icon-ellipse-single.svg"),
+};
+
 const modules = [
   {
     id: "syklisk" as Module,
@@ -13,6 +27,7 @@ const modules = [
     title: "I want to reduce my use",
     sub: "I use occasionally / on weekends",
     href: "/m2/home",
+    icon: "reduce",
   },
   {
     id: "jevnlig" as Module,
@@ -20,6 +35,7 @@ const modules = [
     title: "I want to quit completely",
     sub: "I use regularly or daily",
     href: "/m2",
+    icon: "quit",
   },
   {
     id: "laer" as Module,
@@ -27,22 +43,42 @@ const modules = [
     title: "I want to learn more",
     sub: null,
     href: "/m2/home",
+    icon: "learn",
   },
 ];
 
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.08, delayChildren: 0.25 } },
-};
+// Helper: absolutely-positioned dot image inside a 28×28 container
+// Uses Figma's pattern: container div positions with 4-side %, img fills it 100%
+function AbsDot({ src, top, right, bottom, left }: { src: string; top: string; right: string; bottom: string; left: string }) {
+  return (
+    <div style={{ position: "absolute", top, right, bottom, left }}>
+      <img src={src} alt="" style={{ display: "block", width: "100%", height: "100%" }} />
+    </div>
+  );
+}
 
-const item = {
-  hidden: { opacity: 0, y: 18 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { type: "spring" as const, stiffness: 340, damping: 28 },
-  },
-};
+// Exact icon rendering per Figma node structure
+function ModuleIcon({ type, bg }: { type: string; bg: string }) {
+  return (
+    <div style={{ background: bg, borderRadius: 24, padding: 8, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", width: 44, height: 44 }}>
+      <div style={{ width: 28, height: 28, position: "relative", overflow: "hidden" }}>
+        {type === "reduce" && (
+          <>
+            <AbsDot src={ICONS.ellipseDots} top="54.17%" left="58.33%" right="20.83%" bottom="25%" />
+            <AbsDot src={ICONS.ellipseDots} top="54.17%" left="20.83%" right="58.33%" bottom="25%" />
+            <AbsDot src={ICONS.ellipseTop}  top="20.83%" left="41.67%" right="37.5%"  bottom="58.33%" />
+          </>
+        )}
+        {type === "quit" && (
+          <AbsDot src={ICONS.groupDots} top="22.92%" left="39.58%" right="39.58%" bottom="22.92%" />
+        )}
+        {type === "learn" && (
+          <AbsDot src={ICONS.ellipseSingle} top="39.58%" left="39.58%" right="39.58%" bottom="39.58%" />
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function WelcomePage() {
   const router = useRouter();
@@ -55,226 +91,160 @@ export default function WelcomePage() {
 
   return (
     <div
-      className="relative flex h-full flex-col items-center overflow-hidden"
-      style={{ background: "#f2f7fe" }}
+      className="relative h-full w-full overflow-hidden"
+      style={{ background: "#c8dde8" /* fallback while bg image loads */ }}
     >
-      {/* Status bar */}
-      <div className="flex w-full items-center justify-between px-6 pt-[52px] pb-2">
-        <span
-          style={{
-            fontSize: 15,
-            fontWeight: 600,
-            color: "#062870",
-            letterSpacing: -0.2,
-          }}
-        >
-          9:41
-        </span>
-        <div className="flex items-center gap-1.5">
-          <img
-            src={asset("/figma-assets/a4198387082605f2a8f9d8ad6d1d21e9ed03679f.svg")}
-            width={19}
-            height={13}
-            alt=""
-          />
-          <img
-            src={asset("/figma-assets/5f2f33dd898f106cc9bf144bc1aa9d551e751172.svg")}
-            width={17}
-            height={13}
-            alt=""
-          />
-          <img
-            src={asset("/figma-assets/61b774f95a59e641835654a61344b08c890ba989.svg")}
-            width={27}
-            height={13}
-            alt=""
-          />
-        </div>
-      </div>
+      {/* Full-screen background image (Figma node bg) */}
+      <img
+        src={asset("/figma-assets/welcome-bg.png")}
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+      />
 
-      {/* Hero */}
-      <motion.div
-        className="mt-10 flex flex-col items-center text-center px-8"
-        initial={{ opacity: 0, y: -14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ type: "spring", stiffness: 300, damping: 26, delay: 0.1 }}
+      {/* Centered content — exactly as Figma: top:50% -translate-y-1/2 */}
+      <div
+        className="absolute inset-x-0 top-1/2 -translate-y-1/2"
+        style={{ padding: 24 }}
       >
-        <span style={{ fontSize: 44, lineHeight: 1 }}>🤝</span>
-        <h1
-          style={{
-            marginTop: 16,
-            fontSize: 22,
-            fontWeight: 700,
-            color: "#062870",
-            letterSpacing: -0.2,
-          }}
+        {/* Hero block */}
+        <motion.div
+          className="flex flex-col items-center text-center"
+          style={{ gap: 11, color: "#062870" }}
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
-          Welcome
-        </h1>
-        <p
-          style={{
-            marginTop: 6,
-            fontSize: 15,
-            fontWeight: 400,
-            color: "#062870",
-          }}
-        >
-          Self-help for people who use cocaine
-        </p>
-      </motion.div>
+          <p style={{ fontSize: 44, lineHeight: 1, fontWeight: 400 }}>🤝</p>
+          <p style={{ fontSize: 22, fontWeight: 700, lineHeight: "28px", letterSpacing: -0.2 }}>
+            Welcome
+          </p>
+          <p style={{ fontSize: 15, fontWeight: 400, lineHeight: "20px" }}>
+            Self-help for people who use cocaine
+          </p>
+        </motion.div>
 
-      {/* Module selector */}
-      <motion.div
-        className="mt-auto w-full px-5 pb-10"
-        style={{ marginTop: 120 }}
-        variants={container}
-        initial="hidden"
-        animate="show"
-      >
-        <p
-          style={{
-            marginBottom: 16,
-            textAlign: "center",
-            fontSize: 15,
-            fontWeight: 400,
-            color: "#184880",
-          }}
-        >
-          Choose your path
-        </p>
+        {/* 120px gap (Figma: gap-[120px]) */}
+        <div style={{ height: 120 }} />
 
-        {/* Glass card */}
-        <div
-          style={{
-            borderRadius: 40,
-            overflow: "hidden",
-            position: "relative",
-            padding: 24,
-          }}
+        {/* Selector block */}
+        <motion.div
+          className="flex flex-col items-center"
+          style={{ gap: 16 }}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
         >
-          {/* Glass overlay */}
-          <div
-            aria-hidden
+          {/* "Choose your path" label */}
+          <p
             style={{
-              position: "absolute",
-              inset: 0,
-              background: "rgba(255,255,255,0.80)",
-              backdropFilter: "blur(30px)",
-              WebkitBackdropFilter: "blur(30px)",
-              mixBlendMode: "screen",
-              pointerEvents: "none",
-              borderRadius: 40,
+              fontSize: 15,
+              fontWeight: 400,
+              lineHeight: "20px",
+              color: "#062870",
+              textAlign: "center",
+              width: 327,
             }}
-          />
-          <div style={{ position: "relative", zIndex: 1 }}>
-            {modules.map((mod, i) => (
-              <motion.div key={mod.id} variants={item}>
+          >
+            Choose your path
+          </p>
+
+          {/* Glass card — w-[327px], rounded-[40px], p-[24px] */}
+          <div
+            style={{
+              width: 327,
+              borderRadius: 40,
+              padding: 24,
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            {/* Glass overlay — exact Figma: backdrop-blur-[30px] bg-[rgba(255,255,255,0.8)] mix-blend-screen */}
+            <div
+              aria-hidden
+              style={{
+                position: "absolute",
+                inset: 0,
+                borderRadius: 40,
+                background: "rgba(255,255,255,0.80)",
+                backdropFilter: "blur(30px)",
+                WebkitBackdropFilter: "blur(30px)",
+                mixBlendMode: "screen",
+                pointerEvents: "none",
+              }}
+            />
+
+            {/* Module rows */}
+            <div style={{ position: "relative", zIndex: 1 }}>
+              {modules.map((mod, i) => (
                 <button
+                  key={mod.id}
                   onClick={() => choose(mod.id, mod.href)}
                   style={{
                     display: "flex",
                     width: "100%",
                     alignItems: "center",
                     gap: 16,
-                    paddingTop: i === 0 ? 0 : 16,
-                    paddingBottom: i === modules.length - 1 ? 0 : 16,
-                    paddingLeft: 0,
-                    paddingRight: 0,
+                    paddingTop: 16,
+                    paddingBottom: 16,
                     background: "transparent",
                     border: "none",
+                    borderBottom:
+                      i < modules.length - 1 ? "1px solid rgba(0,0,0,0.04)" : "none",
                     cursor: "pointer",
                     textAlign: "left",
-                    borderBottom:
-                      i < modules.length - 1
-                        ? "1px solid rgba(0,0,0,0.04)"
-                        : "none",
                   }}
                 >
-                  {/* Icon badge */}
-                  <div
-                    style={{
-                      width: 44,
-                      height: 44,
-                      borderRadius: 24,
-                      background: mod.badgeBg,
-                      flexShrink: 0,
-                      padding: 8,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 28,
-                        height: 28,
-                        borderRadius: "50%",
-                        background:
-                          mod.id === "syklisk"
-                            ? "#f4905a"
-                            : mod.id === "jevnlig"
-                            ? "#0e9082"
-                            : "#3c7abd",
-                      }}
-                    />
-                  </div>
+                  <ModuleIcon type={mod.icon} bg={mod.badgeBg} />
 
                   {/* Text */}
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <p
-                      style={{
-                        fontSize: 15,
-                        fontWeight: 500,
-                        color: "#184880",
-                        lineHeight: "20px",
-                      }}
-                    >
+                  <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
+                    <p style={{ fontSize: 15, fontWeight: 500, lineHeight: "20px", color: "#184880" }}>
                       {mod.title}
                     </p>
                     {mod.sub && (
-                      <p
-                        style={{
-                          marginTop: 2,
-                          fontSize: 11,
-                          fontWeight: 400,
-                          color: "#184880",
-                          lineHeight: "16px",
-                        }}
-                      >
+                      <p style={{ fontSize: 11, fontWeight: 400, lineHeight: "16px", color: "#184880" }}>
                         {mod.sub}
                       </p>
                     )}
                   </div>
 
-                  {/* Chevron */}
-                  <img
-                    src={asset(
-                      "/figma-assets/181f97e23de90958389b7451641d422205fc8053.svg"
-                    )}
-                    width={8}
-                    height={14}
-                    alt=""
-                  />
+                  {/* Chevron — size-[24px] container, icon inside at 41.67%/33.33% inset */}
+                  <div style={{ width: 24, height: 24, position: "relative", overflow: "hidden", flexShrink: 0 }}>
+                    <div
+                      style={{
+                        position: "absolute",
+                        bottom: "25%",
+                        left: "41.67%",
+                        right: "33.33%",
+                        top: "25%",
+                      }}
+                    >
+                      <div style={{ position: "absolute", inset: "-8.33% -16.67%" }}>
+                        <img src={CHEVRON} alt="" style={{ display: "block", width: "100%", height: "100%" }} />
+                      </div>
+                    </div>
+                  </div>
                 </button>
-              </motion.div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
 
-        <motion.p
-          style={{
-            marginTop: 16,
-            textAlign: "center",
-            fontSize: 13,
-            color: "#184880",
-          }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-        >
-          Not sure? Start with the information module.
-        </motion.p>
-      </motion.div>
+          {/* Caption */}
+          <p
+            style={{
+              fontSize: 13,
+              fontWeight: 400,
+              lineHeight: "20px",
+              color: "#184880",
+              textAlign: "center",
+              width: "100%",
+            }}
+          >
+            Not sure? Start with the information module.
+          </p>
+        </motion.div>
+      </div>
     </div>
   );
 }
