@@ -205,8 +205,10 @@ export default function M2WelcomePage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ type: "spring", stiffness: 300, damping: 26, delay: 0.2 }}
       >
-        <button
+        <motion.button
           onClick={() => router.push("/m2/onboarding")}
+          whileTap={{ scale: 0.97, opacity: 0.9 }}
+          transition={{ duration: 0.12 }}
           style={{
             width: "100%",
             height: 56,
@@ -222,7 +224,7 @@ export default function M2WelcomePage() {
           }}
         >
           Get started
-        </button>
+        </motion.button>
 
         {/* Home indicator */}
         <div

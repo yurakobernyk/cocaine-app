@@ -5,42 +5,69 @@ import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 
 /**
- * iOS-style spring page transition.
+ * Apple-style page transition.
  *
- * Tracks previous path depth to decide direction:
- *   Forward (deeper) → new page slides in from right, old exits left
- *   Back    (shallower) → new page slides in from left, old exits right
+ * Standard navigation (push/pop): subtle horizontal offset + opacity + blur.
+ * Feels like one cohesive surface shifting — not a mechanical slide.
  *
- * Uses mode="wait" so only one page is ever visible — no overlap.
+ * Completion transition (onboarding → home): gentle upward reveal with fade.
+ * Marks the "arrival" moment — the home screen materialises from below.
  */
 
-const spring = {
-  type: "spring" as const,
-  stiffness: 360,
-  damping: 32,
-  mass: 0.9,
-};
-
-const exitSpring = { ...spring, stiffness: 300, damping: 30 };
+const ease = [0.16, 1, 0.3, 1] as const;
+const easeOut = [0.4, 0, 0.2, 1] as const;
+const easeIn = [0.4, 0, 1, 0.6] as const;
 
 function makeVariants(dir: number) {
   return {
     initial: {
-      x: dir >= 0 ? "100%" : "-100%",
+      x: dir >= 0 ? 40 : -40,
       opacity: 0,
+      filter: "blur(6px)",
     },
     animate: {
       x: 0,
       opacity: 1,
-      transition: spring,
+      filter: "blur(0px)",
+      transition: { duration: 0.42, ease },
     },
     exit: {
-      x: dir >= 0 ? "-30%" : "30%",
+      x: dir >= 0 ? -28 : 28,
       opacity: 0,
-      transition: exitSpring,
+      filter: "blur(4px)",
+      transition: { duration: 0.2, ease: easeIn },
     },
   };
 }
+
+/** Completion variant — onboarding → home: screen gently rises and settles */
+const completionVariants = {
+  initial: {
+    opacity: 0,
+    y: 28,
+    scale: 0.97,
+    filter: "blur(8px)",
+  },
+  animate: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.52,
+      ease,
+      opacity: { duration: 0.38 },
+      filter: { duration: 0.38 },
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: -14,
+    scale: 0.98,
+    filter: "blur(4px)",
+    transition: { duration: 0.22, ease: easeOut },
+  },
+};
 
 /** Depth map — higher = deeper in nav stack */
 const DEPTH: Record<string, number> = {
@@ -64,21 +91,22 @@ export function PageTransition({ children }: Props) {
   const pathname = usePathname();
   const prevPathRef = useRef<string>(pathname);
 
-  const prevDepth = getDepth(prevPathRef.current);
+  const prevPath = prevPathRef.current;
+  const prevDepth = getDepth(prevPath);
   const currDepth = getDepth(pathname);
 
-  // direction: +1 = forward (right), -1 = back (left)
   const dir = currDepth >= prevDepth ? 1 : -1;
 
-  // Update previous path after computing direction
+  // Detect the special completion moment: onboarding → home
+  const isCompletion = prevPath === "/m2/onboarding" && pathname === "/m2/home";
+
   if (prevPathRef.current !== pathname) {
     prevPathRef.current = pathname;
   }
 
-  const variants = makeVariants(dir);
+  const variants = isCompletion ? completionVariants : makeVariants(dir);
 
   return (
-    /* overflow-hidden clips the sliding pages cleanly */
     <div className="absolute inset-0 overflow-hidden">
       <AnimatePresence mode="wait" initial={false}>
         <motion.div

@@ -14,15 +14,15 @@ import { ProgressBar } from "@/components/ui/progress-bar";
 /* ─── Stagger container animation ───────────────────────────────────────── */
 const container = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.06, delayChildren: 0.05 } },
+  show: { transition: { staggerChildren: 0.09, delayChildren: 0.14 } },
 };
 const cardAnim = {
-  hidden: { opacity: 0, y: 24, scale: 0.96 },
+  hidden: { opacity: 0, y: 14, scale: 0.98 },
   show: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { type: "spring" as const, stiffness: 320, damping: 28 },
+    transition: { type: "spring" as const, stiffness: 240, damping: 26, mass: 0.9 },
   },
 };
 

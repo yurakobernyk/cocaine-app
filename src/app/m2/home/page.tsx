@@ -10,13 +10,12 @@ import { HomeCards } from "@/components/home/HomeCards";
 import { useAppStore } from "@/store/app.store";
 
 const panelVariants = {
-  initial: { opacity: 0, y: 8 },
+  initial: { opacity: 0 },
   animate: {
     opacity: 1,
-    y: 0,
-    transition: { type: "spring" as const, stiffness: 340, damping: 28 },
+    transition: { duration: 0.22, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
   },
-  exit: { opacity: 0, y: -6, transition: { duration: 0.18 } },
+  exit: { opacity: 0, transition: { duration: 0.15 } },
 };
 
 function PlaceholderPanel({ title }: { title: string }) {
@@ -58,14 +57,19 @@ export default function M2HomePage() {
         style={{ paddingTop: 200, paddingBottom: 108 }}
       >
         {/* Greeting — Figma: gap-[4px], px-[24px] py-[16px] */}
-        <div className="flex flex-col gap-1 px-6 py-4">
+        <motion.div
+          className="flex flex-col gap-1 px-6 py-4"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.48, ease: [0.16, 1, 0.3, 1], delay: 0.18 }}
+        >
           <p className="text-[17px] font-semibold leading-6 text-[#525252]">
             Hei, {profile.name}!
           </p>
           <h1 className="text-[34px] font-bold leading-10 tracking-[-0.5px] text-[#151515]">
             Positiv i dag
           </h1>
-        </div>
+        </motion.div>
 
         {/* Tab panels */}
         <AnimatePresence mode="wait" initial={false}>
