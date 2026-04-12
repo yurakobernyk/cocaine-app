@@ -7,22 +7,25 @@ import { useAppStore } from "@/store/app.store";
 import { useTimerStore } from "@/store/timer.store";
 import { asset } from "@/lib/asset";
 
-// ─── Delicate content transition ────────────────────────────────────────────
-// Only the step content slides & fades — header/footer stay pinned and visible
+// ─── Step transition: ultra-delicate, content only ───────────────────────────
+// Very subtle shift + opacity — feels cohesive, never jarring
 const contentVariants = {
   enter: (dir: number) => ({
-    x: dir > 0 ? 24 : -24,
+    x: dir > 0 ? 16 : -16,
     opacity: 0,
+    filter: "blur(2px)",
   }),
   center: {
     x: 0,
     opacity: 1,
-    transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1] },
+    filter: "blur(0px)",
+    transition: { duration: 0.38, ease: [0.16, 1, 0.3, 1] },
   },
   exit: (dir: number) => ({
-    x: dir > 0 ? -24 : 24,
+    x: dir > 0 ? -12 : 12,
     opacity: 0,
-    transition: { duration: 0.22, ease: [0.55, 0, 1, 0.45] },
+    filter: "blur(1px)",
+    transition: { duration: 0.2, ease: [0.4, 0, 1, 0.6] },
   }),
 };
 
@@ -55,29 +58,22 @@ function CalendarPicker({ selected, onChange }: { selected: Date; onChange: (d: 
         mixBlendMode: "screen", pointerEvents: "none",
       }} />
       <div style={{ position: "relative", zIndex: 1, padding: "16px 8px" }}>
-        {/* Month nav */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 8px 12px" }}>
           <span style={{ fontSize: 17, fontWeight: 590, letterSpacing: -0.43, color: "#000" }}>
             {monthNames[month]} {year}
           </span>
           <div style={{ display: "flex", gap: 24 }}>
             <button onClick={() => setViewDate(new Date(year, month - 1, 1))}
-              style={{ fontSize: 22, color: "#128468", background: "none", border: "none", cursor: "pointer", lineHeight: 1, padding: "0 4px" }}>
-              ‹
-            </button>
+              style={{ fontSize: 22, color: "#128468", background: "none", border: "none", cursor: "pointer", lineHeight: 1, padding: "0 4px" }}>‹</button>
             <button onClick={() => setViewDate(new Date(year, month + 1, 1))}
-              style={{ fontSize: 22, color: "#128468", background: "none", border: "none", cursor: "pointer", lineHeight: 1, padding: "0 4px" }}>
-              ›
-            </button>
+              style={{ fontSize: 22, color: "#128468", background: "none", border: "none", cursor: "pointer", lineHeight: 1, padding: "0 4px" }}>›</button>
           </div>
         </div>
-        {/* Day headers */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", marginBottom: 4 }}>
           {dayHeaders.map(d => (
             <div key={d} style={{ textAlign: "center", fontSize: 12, fontWeight: 600, color: "#7a7a7a", letterSpacing: 0.3, padding: "4px 0" }}>{d}</div>
           ))}
         </div>
-        {/* Calendar grid */}
         {weeks.map((week, wi) => (
           <div key={wi} style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)" }}>
             {week.map((day, di) => {
@@ -87,19 +83,13 @@ function CalendarPicker({ selected, onChange }: { selected: Date; onChange: (d: 
               const isToday = d.toDateString() === today.toDateString();
               return (
                 <button key={di} onClick={() => onChange(d)} style={{
-                  height: 40, width: "100%",
-                  borderRadius: "50%",
-                  border: "none",
+                  height: 40, width: "100%", borderRadius: "50%", border: "none",
                   background: isSelected ? "rgba(18,132,104,0.18)" : "transparent",
-                  fontSize: isSelected ? 20 : 18,
-                  fontWeight: isSelected ? 600 : 400,
+                  fontSize: isSelected ? 20 : 18, fontWeight: isSelected ? 600 : 400,
                   color: isToday ? "#128468" : "#000",
-                  cursor: "pointer",
-                  display: "flex", alignItems: "center", justifyContent: "center",
+                  cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
                   transition: "background 0.15s",
-                }}>
-                  {day}
-                </button>
+                }}>{day}</button>
               );
             })}
           </div>
@@ -112,32 +102,23 @@ function CalendarPicker({ selected, onChange }: { selected: Date; onChange: (d: 
 // ─── iOS Toggle ───────────────────────────────────────────────────────────────
 function Toggle({ value, onChange }: { value: boolean; onChange: (v: boolean) => void }) {
   return (
-    <button
-      onClick={() => onChange(!value)}
-      aria-checked={value}
-      role="switch"
+    <button onClick={() => onChange(!value)} role="switch" aria-checked={value}
       style={{
         width: 51, height: 31, borderRadius: 100,
         background: value ? "#34c759" : "rgba(120,120,128,0.32)",
-        border: "none", cursor: "pointer",
-        position: "relative", flexShrink: 0,
-        transition: "background 0.22s ease",
-        padding: 2,
-      }}
-    >
+        border: "none", cursor: "pointer", position: "relative", flexShrink: 0,
+        transition: "background 0.22s ease", padding: 2,
+      }}>
       <div style={{
-        position: "absolute",
-        top: 2, left: value ? 22 : 2,
-        width: 27, height: 27,
-        borderRadius: "50%", background: "#fff",
-        boxShadow: "0 2px 6px rgba(0,0,0,0.22)",
-        transition: "left 0.22s ease",
+        position: "absolute", top: 2, left: value ? 22 : 2,
+        width: 27, height: 27, borderRadius: "50%", background: "#fff",
+        boxShadow: "0 2px 6px rgba(0,0,0,0.22)", transition: "left 0.22s ease",
       }} />
     </button>
   );
 }
 
-// ─── Glass card helper ────────────────────────────────────────────────────────
+// ─── Glass card ───────────────────────────────────────────────────────────────
 function GlassCard({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
     <div style={{ borderRadius: 24, overflow: "hidden", position: "relative", ...style }}>
@@ -187,11 +168,8 @@ function ProgressDots({ step }: { step: number }) {
         return (
           <motion.div
             key={i}
-            animate={{
-              width: isActive ? 28 : 8,
-              background: isActive || isDone ? "#0e9082" : "#88d8ce",
-            }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            animate={{ width: isActive ? 28 : 8, background: isActive || isDone ? "#0e9082" : "#88d8ce" }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             style={{ height: 8, borderRadius: 100, flexShrink: 0 }}
           />
         );
@@ -200,7 +178,7 @@ function ProgressDots({ step }: { step: number }) {
   );
 }
 
-// ─── Frequency options ────────────────────────────────────────────────────────
+// ─── Step content ─────────────────────────────────────────────────────────────
 const FREQUENCY_OPTIONS = [
   { value: "Daily", label: "Daily", sub: "Every day use" },
   { value: "4-6pw", label: "4–6 times a week", sub: "Almost daily" },
@@ -208,14 +186,12 @@ const FREQUENCY_OPTIONS = [
   { value: "1pw",   label: "Once a week", sub: "Stable, but less frequent" },
 ];
 
-// ─── Programme phases ─────────────────────────────────────────────────────────
 const PROGRAMME_PHASES = [
   { weeks: "Weeks 1–2",  title: "Phase 1: First symptoms", sub: "Cravings, insomnia, mood swings",  selected: true },
   { weeks: "Weeks 3–6",  title: "Phase 2: Normalisation",  sub: "Gradual stabilisation",             selected: false },
   { weeks: "Weeks 7–12", title: "Phase 3: Stabilisation",  sub: "Building new habits",               selected: false },
 ];
 
-// ─── Step content ─────────────────────────────────────────────────────────────
 function Step1Frequency({ frequency, setFrequency }: { frequency: string; setFrequency: (v: string) => void }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -269,9 +245,7 @@ function Step2Programme() {
             border: phase.selected ? "2px solid #80d4b8" : "2px solid transparent",
             display: "flex", flexDirection: "column", justifyContent: "center",
           }}>
-            <p style={{ fontSize: 12, fontWeight: 600, color: "#0e9082", textTransform: "uppercase", letterSpacing: 0.5, margin: 0, marginBottom: 6 }}>
-              {phase.weeks}
-            </p>
+            <p style={{ fontSize: 12, fontWeight: 600, color: "#0e9082", textTransform: "uppercase", letterSpacing: 0.5, margin: 0, marginBottom: 6 }}>{phase.weeks}</p>
             <p style={{ fontSize: 18, fontWeight: 500, color: "#1a2030", lineHeight: "24px", margin: 0 }}>{phase.title}</p>
             <p style={{ fontSize: 14, fontWeight: 400, color: "#2a5040", lineHeight: "20px", margin: 0, marginTop: 4 }}>{phase.sub}</p>
           </div>
@@ -290,12 +264,8 @@ function Step3QuitDate({ quitDate, setQuitDate }: { quitDate: Date; setQuitDate:
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <div>
-        <h2 style={{ fontSize: 22, fontWeight: 700, color: "#0e1e18", letterSpacing: -0.2, lineHeight: "28px", margin: 0 }}>
-          Quit date
-        </h2>
-        <p style={{ fontSize: 15, color: "#0e1e18", margin: 0, marginTop: 4, lineHeight: "20px" }}>
-          This is your &apos;day zero&apos;
-        </p>
+        <h2 style={{ fontSize: 22, fontWeight: 700, color: "#0e1e18", letterSpacing: -0.2, lineHeight: "28px", margin: 0 }}>Quit date</h2>
+        <p style={{ fontSize: 15, color: "#0e1e18", margin: 0, marginTop: 4, lineHeight: "20px" }}>This is your &apos;day zero&apos;</p>
       </div>
       <CalendarPicker selected={quitDate} onChange={setQuitDate} />
       <div style={{ background: "#d4faeb", borderRadius: 999, padding: "14px 24px" }}>
@@ -306,9 +276,7 @@ function Step3QuitDate({ quitDate, setQuitDate }: { quitDate: Date; setQuitDate:
 }
 
 function Step4StatsPrivacy({
-  shareStats, setShareStats,
-  age, setAge,
-  gender, setGender,
+  shareStats, setShareStats, age, setAge, gender, setGender,
 }: {
   shareStats: boolean; setShareStats: (v: boolean) => void;
   age: boolean; setAge: (v: boolean) => void;
@@ -317,15 +285,11 @@ function Step4StatsPrivacy({
   const rows = [
     { label: "Share statistics", value: shareStats, onChange: setShareStats },
     { label: "Age (optional)",   value: age,        onChange: setAge },
-    { label: "Gender (optional)", value: gender,     onChange: setGender },
+    { label: "Gender (optional)", value: gender,    onChange: setGender },
   ];
-
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-      <h2 style={{ fontSize: 22, fontWeight: 700, color: "#0e1e18", letterSpacing: -0.2, lineHeight: "28px", margin: 0 }}>
-        Anonymous statistics
-      </h2>
-
+      <h2 style={{ fontSize: 22, fontWeight: 700, color: "#0e1e18", letterSpacing: -0.2, lineHeight: "28px", margin: 0 }}>Anonymous statistics</h2>
       <GlassCard>
         {rows.map((row, i) => (
           <div key={row.label}>
@@ -337,17 +301,12 @@ function Step4StatsPrivacy({
           </div>
         ))}
       </GlassCard>
-
-      <h2 style={{ fontSize: 22, fontWeight: 700, color: "#043634", letterSpacing: -0.2, lineHeight: "28px", margin: 0 }}>
-        Privacy
-      </h2>
-
+      <h2 style={{ fontSize: 22, fontWeight: 700, color: "#043634", letterSpacing: -0.2, lineHeight: "28px", margin: 0 }}>Privacy</h2>
       <GlassCard>
-        {["Velferdsetaten Oslo · Org. 997506413", "All data is encrypted on your device.", "Reset is permanent and irreversible."].map((line, i) => (
+        {["Velferdsetaten Oslo · Org. 997506413","All data is encrypted on your device.","Reset is permanent and irreversible."].map((line, i) => (
           <p key={i} style={{ fontSize: 16, color: "#0e1e18", lineHeight: "24px", margin: 0, marginTop: i > 0 ? 12 : 0 }}>{line}</p>
         ))}
       </GlassCard>
-
       <GlassCard>
         <p style={{ fontSize: 16, color: "#0e1e18", lineHeight: "24px", margin: 0 }}>
           💡&nbsp;&nbsp;Changed your mind? You can switch to a programme later in Settings.
@@ -362,9 +321,7 @@ export default function M2OnboardingPage() {
   const [step, setStep] = useState(0);
   const [frequency, setFrequency] = useState("Daily");
   const [quitDate, setQuitDate] = useState<Date>(() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 7);
-    return d;
+    const d = new Date(); d.setDate(d.getDate() + 7); return d;
   });
   const [shareStats, setShareStats] = useState(true);
   const [age, setAge] = useState(false);
@@ -377,10 +334,8 @@ export default function M2OnboardingPage() {
   const setQuitTimestamp = useTimerStore((s) => s.setQuitTimestamp);
 
   function goNext() {
-    if (step < TOTAL_STEPS - 1) {
-      setDirection(1);
-      setStep((s) => s + 1);
-    } else {
+    if (step < TOTAL_STEPS - 1) { setDirection(1); setStep((s) => s + 1); }
+    else {
       const daysOffset = Math.ceil((quitDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
       setQuitTimestamp(Date.now() - (90 - Math.max(0, daysOffset)) * 24 * 60 * 60 * 1000);
       updateProfile({ quitDate: quitDate.toISOString().slice(0, 10), anonymousStats: shareStats, privacyAccepted: true });
@@ -400,30 +355,40 @@ export default function M2OnboardingPage() {
     : step === 2 ? "Confirm →"
     : "Next →";
 
+  // Height budget: header≈96px, footer≈130px
+  const HEADER_H = 96;
+  const FOOTER_H = 130;
+
   return (
     <div style={{ position: "relative", height: "100%", overflow: "hidden", background: "#eef8ef" }}>
 
-      {/* ── PERSISTENT HEADER — never animates ── */}
+      {/* ── HEADER: fully transparent, no bg ── */}
       <div style={{
         position: "absolute", top: 0, left: 0, right: 0, zIndex: 30,
-        background: "rgba(238,248,239,0.92)",
-        backdropFilter: "blur(12px)",
-        WebkitBackdropFilter: "blur(12px)",
+        pointerEvents: "none",
       }}>
-        <StatusBar />
-        <ProgressDots step={step} />
-        <div style={{ height: 12 }} />
+        {/* Actual interactive elements re-enable pointer events */}
+        <div style={{ pointerEvents: "auto" }}>
+          <StatusBar />
+          <ProgressDots step={step} />
+          <div style={{ height: 12 }} />
+        </div>
       </div>
 
-      {/* ── SCROLLABLE CONTENT (only this animates) ── */}
+      {/* ── SCROLLABLE CONTENT ── */}
       <div style={{
         position: "absolute",
-        top: 100,   /* below header */
+        top: HEADER_H,
         left: 0, right: 0,
-        bottom: 130, /* above footer */
+        bottom: FOOTER_H,
         overflowY: "auto",
         overflowX: "hidden",
+        // Hide native scrollbar
+        scrollbarWidth: "none",
       }}>
+        <style>{`
+          div::-webkit-scrollbar { display: none; }
+        `}</style>
         <AnimatePresence mode="wait" custom={direction} initial={false}>
           <motion.div
             key={step}
@@ -432,7 +397,7 @@ export default function M2OnboardingPage() {
             initial="enter"
             animate="center"
             exit="exit"
-            style={{ padding: "8px 24px 24px" }}
+            style={{ padding: "8px 24px 40px" }}
           >
             {step === 0 && <Step1Frequency frequency={frequency} setFrequency={setFrequency} />}
             {step === 1 && <Step2Programme />}
@@ -448,60 +413,98 @@ export default function M2OnboardingPage() {
         </AnimatePresence>
       </div>
 
-      {/* ── PERSISTENT FOOTER — never animates ── */}
+      {/* ── FOOTER: fully transparent + iOS progressive blur above buttons ── */}
       <div style={{
         position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 30,
-        background: "rgba(238,248,239,0.92)",
-        backdropFilter: "blur(12px)",
-        WebkitBackdropFilter: "blur(12px)",
-        paddingTop: 12,
-        paddingLeft: 24,
-        paddingRight: 24,
       }}>
-        {step === 0 ? (
-          <div style={{ display: "flex", gap: 12 }}>
-            <motion.button
-              onClick={goBack}
-              whileTap={{ scale: 0.97 }}
-              style={{
-                flex: 1, height: 56, borderRadius: 999,
-                background: "rgba(255,255,255,0.9)",
-                backdropFilter: "blur(15px)",
-                border: "none", fontSize: 17, fontWeight: 600,
-                color: "#0e1e18", cursor: "pointer",
-                boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
-              }}
-            >
-              Skip
-            </motion.button>
+        {/*
+          Progressive blur veil — sits just above footer, fades content into blur.
+          Mimics Apple's "scroll edge" progressive blur effect.
+          Four stacked layers with increasing blur and decreasing opacity — each
+          covers a slice of height with a vertical gradient mask.
+        */}
+        {[
+          { blur: 1,  top: -56, opacity: 0.4  },
+          { blur: 3,  top: -44, opacity: 0.55 },
+          { blur: 7,  top: -32, opacity: 0.65 },
+          { blur: 14, top: -20, opacity: 0.75 },
+          { blur: 20, top: -10, opacity: 0.9  },
+        ].map((layer, i) => (
+          <div
+            key={i}
+            aria-hidden
+            style={{
+              position: "absolute",
+              top: layer.top,
+              left: 0, right: 0,
+              height: Math.abs(layer.top) + 4,
+              backdropFilter: `blur(${layer.blur}px)`,
+              WebkitBackdropFilter: `blur(${layer.blur}px)`,
+              // Mask: transparent at top edge, opaque at bottom
+              WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 100%)",
+              maskImage: "linear-gradient(to bottom, transparent 0%, black 100%)",
+              // Tint layer fades the background color upward
+              background: `linear-gradient(to bottom, transparent 0%, rgba(238,248,239,${layer.opacity}) 100%)`,
+              pointerEvents: "none",
+            }}
+          />
+        ))}
+
+        {/* Solid base under buttons — invisible, just separates from scrollable */}
+        <div style={{
+          paddingTop: 12,
+          paddingLeft: 24,
+          paddingRight: 24,
+          background: "transparent",
+        }}>
+          {step === 0 ? (
+            <div style={{ display: "flex", gap: 12 }}>
+              <motion.button
+                onClick={goBack}
+                whileTap={{ scale: 0.97 }}
+                style={{
+                  flex: 1, height: 56, borderRadius: 999,
+                  background: "rgba(255,255,255,0.82)",
+                  backdropFilter: "blur(20px)",
+                  WebkitBackdropFilter: "blur(20px)",
+                  border: "none", fontSize: 17, fontWeight: 600,
+                  color: "#0e1e18", cursor: "pointer",
+                  boxShadow: "0 2px 16px rgba(0,0,0,0.07)",
+                }}
+              >
+                Skip
+              </motion.button>
+              <motion.button
+                onClick={goNext}
+                whileTap={{ scale: 0.97 }}
+                style={{
+                  flex: 1, height: 56, borderRadius: 1000,
+                  background: "#0e9082",
+                  border: "none", fontSize: 17, fontWeight: 600,
+                  color: "#fff", cursor: "pointer",
+                  boxShadow: "0 4px 20px rgba(14,144,130,0.32)",
+                }}
+              >
+                {nextLabel}
+              </motion.button>
+            </div>
+          ) : (
             <motion.button
               onClick={goNext}
               whileTap={{ scale: 0.97 }}
               style={{
-                flex: 1, height: 56, borderRadius: 1000,
+                width: "100%", height: 56, borderRadius: 1000,
                 background: "#0e9082",
                 border: "none", fontSize: 17, fontWeight: 600,
                 color: "#fff", cursor: "pointer",
+                boxShadow: "0 4px 20px rgba(14,144,130,0.32)",
               }}
             >
               {nextLabel}
             </motion.button>
-          </div>
-        ) : (
-          <motion.button
-            onClick={goNext}
-            whileTap={{ scale: 0.97 }}
-            style={{
-              width: "100%", height: 56, borderRadius: 1000,
-              background: "#0e9082",
-              border: "none", fontSize: 17, fontWeight: 600,
-              color: "#fff", cursor: "pointer",
-            }}
-          >
-            {nextLabel}
-          </motion.button>
-        )}
-        <HomeIndicator />
+          )}
+          <HomeIndicator />
+        </div>
       </div>
     </div>
   );
