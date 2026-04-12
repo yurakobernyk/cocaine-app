@@ -108,10 +108,8 @@ export default function M2HomePage() {
       {/* Header — pointer-events-none wrapper, buttons inside re-enable */}
       <HomeHeader />
 
-      {/* Tab bar — interactive overlay on bottom */}
-      <div className="pointer-events-auto">
-        <HomeTabBar active={activeTab} onChange={handleTabChange} />
-      </div>
+      {/* Tab bar */}
+      <HomeTabBar active={activeTab} onChange={handleTabChange} />
     </div>
   );
 }

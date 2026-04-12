@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { PageTransition } from "@/components/motion/PageTransition";
+import { SwCleaner } from "@/components/SwCleaner";
 import "./globals.css";
 
 const inter = Inter({
@@ -37,6 +38,7 @@ export default function RootLayout({
   return (
     <html lang="no" className={`${inter.variable} h-full antialiased`}>
       <body className="h-full overflow-hidden bg-m2-bg">
+        <SwCleaner />
         {/* Mobile shell: constrain to phone viewport */}
         <div className="relative mx-auto h-full w-full max-w-[430px] overflow-hidden shadow-2xl">
           <PageTransition>{children}</PageTransition>
