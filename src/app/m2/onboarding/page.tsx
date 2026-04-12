@@ -19,13 +19,13 @@ const contentVariants = {
     x: 0,
     opacity: 1,
     filter: "blur(0px)",
-    transition: { duration: 0.38, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.38, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
   },
   exit: (dir: number) => ({
     x: dir > 0 ? -12 : 12,
     opacity: 0,
     filter: "blur(1px)",
-    transition: { duration: 0.2, ease: [0.4, 0, 1, 0.6] },
+    transition: { duration: 0.2, ease: [0.4, 0, 1, 0.6] as [number, number, number, number] },
   }),
 };
 
