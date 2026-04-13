@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useLayoutEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { asset } from "@/lib/asset";
 import { FigmaIcon } from "@/components/ui/figma-icon";
@@ -53,8 +53,8 @@ export function HomeTabBar({ active, onChange }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [indicator, setIndicator] = useState({ left: 0, width: 0 });
 
-  /* Recompute sliding pill position whenever active tab changes */
-  useEffect(() => {
+  /* Recompute sliding pill position — useLayoutEffect prevents initial flash at 0,0 */
+  useLayoutEffect(() => {
     const btn = tabRefs.current[active];
     const wrap = containerRef.current;
     if (!btn || !wrap) return;

@@ -7,25 +7,22 @@ import { useAppStore } from "@/store/app.store";
 import { useTimerStore } from "@/store/timer.store";
 import { asset } from "@/lib/asset";
 
-// ─── Step transition: ultra-delicate, content only ───────────────────────────
-// Very subtle shift + opacity — feels cohesive, never jarring
+// ─── Step transition: opacity + subtle x shift, no blur ──────────────────────
+// No filter/blur — prevents repaints on elements with backdrop-filter below.
 const contentVariants = {
   enter: (dir: number) => ({
-    x: dir > 0 ? 16 : -16,
+    x: dir > 0 ? 14 : -14,
     opacity: 0,
-    filter: "blur(2px)",
   }),
   center: {
     x: 0,
     opacity: 1,
-    filter: "blur(0px)",
-    transition: { duration: 0.38, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
+    transition: { duration: 0.32, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
   },
   exit: (dir: number) => ({
-    x: dir > 0 ? -12 : 12,
+    x: dir > 0 ? -10 : 10,
     opacity: 0,
-    filter: "blur(1px)",
-    transition: { duration: 0.2, ease: [0.4, 0, 1, 0.6] as [number, number, number, number] },
+    transition: { duration: 0.16, ease: [0.4, 0, 1, 0.6] as [number, number, number, number] },
   }),
 };
 

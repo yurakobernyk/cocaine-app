@@ -7,65 +7,49 @@ import { usePathname } from "next/navigation";
 /**
  * Apple-style page transition.
  *
- * Standard navigation (push/pop): subtle horizontal offset + opacity + blur.
- * Feels like one cohesive surface shifting — not a mechanical slide.
+ * Uses only transform (x/y) + opacity — NO filter/blur.
+ * Blur animations are not GPU-composited and cause full-screen repaints,
+ * especially destructive when the page contains backdrop-filter elements.
  *
- * Completion transition (onboarding → home): gentle upward reveal with fade.
- * Marks the "arrival" moment — the home screen materialises from below.
+ * Completion transition (onboarding → home): gentle upward reveal.
  */
 
 const ease = [0.16, 1, 0.3, 1] as const;
-const easeOut = [0.4, 0, 0.2, 1] as const;
 const easeIn = [0.4, 0, 1, 0.6] as const;
 
 function makeVariants(dir: number) {
   return {
     initial: {
-      x: dir >= 0 ? 40 : -40,
+      x: dir >= 0 ? 36 : -36,
       opacity: 0,
-      filter: "blur(6px)",
     },
     animate: {
       x: 0,
       opacity: 1,
-      filter: "blur(0px)",
-      transition: { duration: 0.42, ease },
+      transition: { duration: 0.38, ease },
     },
     exit: {
-      x: dir >= 0 ? -28 : 28,
+      x: dir >= 0 ? -24 : 24,
       opacity: 0,
-      filter: "blur(4px)",
-      transition: { duration: 0.2, ease: easeIn },
+      transition: { duration: 0.18, ease: easeIn },
     },
   };
 }
 
-/** Completion variant — onboarding → home: screen gently rises and settles */
+/** Completion variant — onboarding → home: screen rises and settles */
 const completionVariants = {
   initial: {
     opacity: 0,
-    y: 28,
-    scale: 0.97,
-    filter: "blur(8px)",
+    y: 24,
   },
   animate: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    filter: "blur(0px)",
-    transition: {
-      duration: 0.52,
-      ease,
-      opacity: { duration: 0.38 },
-      filter: { duration: 0.38 },
-    },
+    transition: { duration: 0.46, ease },
   },
   exit: {
     opacity: 0,
-    y: -14,
-    scale: 0.98,
-    filter: "blur(4px)",
-    transition: { duration: 0.22, ease: easeOut },
+    transition: { duration: 0.16 },
   },
 };
 
@@ -97,7 +81,6 @@ export function PageTransition({ children }: Props) {
 
   const dir = currDepth >= prevDepth ? 1 : -1;
 
-  // Detect the special completion moment: onboarding → home
   const isCompletion = prevPath === "/m2/onboarding" && pathname === "/m2/home";
 
   if (prevPathRef.current !== pathname) {
@@ -115,7 +98,7 @@ export function PageTransition({ children }: Props) {
           initial="initial"
           animate="animate"
           exit="exit"
-          className="absolute inset-0 will-change-transform"
+          style={{ position: "absolute", inset: 0, willChange: "transform, opacity" }}
         >
           {children}
         </motion.div>

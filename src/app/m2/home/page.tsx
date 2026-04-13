@@ -59,9 +59,9 @@ export default function M2HomePage() {
         {/* Greeting — Figma: gap-[4px], px-[24px] py-[16px] */}
         <motion.div
           className="flex flex-col gap-1 px-6 py-4"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.48, ease: [0.16, 1, 0.3, 1], delay: 0.18 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
         >
           <p className="text-[17px] font-semibold leading-6 text-[#525252]">
             Hei, {profile.name}!

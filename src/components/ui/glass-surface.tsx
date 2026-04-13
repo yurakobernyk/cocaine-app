@@ -1,15 +1,9 @@
 /**
  * GlassSurface — reusable glass morphism wrapper.
  *
- * Figma spec (node 191-879):
- *   backdrop-blur-[15px], bg-[rgba(255,255,255,0.5)], mix-blend-screen
- *   shadow-[0px_8px_40px_0px_rgba(0,0,0,0.08)]
- *
- * Two variants:
- *   - "card"  → rounded-[24px]
- *   - "pill"  → rounded-full (999px)
- *
- * Used by HomeCards to avoid copy-pasting the glass overlay every time.
+ * Tap feedback uses opacity instead of scale.
+ * scale + backdrop-filter causes browser to re-composite the backdrop
+ * on every animation frame, producing visible flickering.
  */
 "use client";
 
@@ -19,7 +13,7 @@ interface GlassSurfaceProps extends HTMLMotionProps<"div"> {
   variant?: "card" | "pill";
   /** Extra border style (e.g. crisis card) */
   border?: string;
-  /** Disable tap-scale animation */
+  /** Disable tap animation */
   noTap?: boolean;
   children: React.ReactNode;
 }
@@ -41,7 +35,8 @@ export function GlassSurface({
   const r = RADIUS[variant];
   return (
     <motion.div
-      whileTap={noTap ? undefined : { scale: 0.97 }}
+      whileTap={noTap ? undefined : { opacity: 0.7 }}
+      transition={{ duration: 0.1 }}
       className={`relative overflow-hidden shadow-[0px_8px_40px_0px_rgba(0,0,0,0.08)] ${className}`}
       style={{
         borderRadius: r,
@@ -50,7 +45,7 @@ export function GlassSurface({
       }}
       {...rest}
     >
-      {/* Glass overlay layer — mix-blend-screen as in Figma */}
+      {/* Glass overlay layer */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -62,7 +57,7 @@ export function GlassSurface({
           mixBlendMode: "screen",
         }}
       />
-      {/* Content — sits above the glass overlay */}
+      {/* Content */}
       <div className="relative z-10 h-full">{children}</div>
     </motion.div>
   );

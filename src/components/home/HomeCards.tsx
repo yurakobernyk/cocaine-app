@@ -12,17 +12,19 @@ import { GlassSurface } from "@/components/ui/glass-surface";
 import { ProgressBar } from "@/components/ui/progress-bar";
 
 /* ─── Stagger container animation ───────────────────────────────────────── */
+// Opacity-only stagger — no scale or y transform.
+// Cards contain backdrop-filter (GlassSurface); animating scale/y on their
+// parent forces the browser to re-composite the backdrop on every frame,
+// causing visible flickering. Opacity is GPU-composited and flicker-free.
 const container = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.09, delayChildren: 0.14 } },
+  show: { transition: { staggerChildren: 0.07, delayChildren: 0.1 } },
 };
 const cardAnim = {
-  hidden: { opacity: 0, y: 14, scale: 0.98 },
+  hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { type: "spring" as const, stiffness: 240, damping: 26, mass: 0.9 },
+    transition: { duration: 0.32, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
   },
 };
 
