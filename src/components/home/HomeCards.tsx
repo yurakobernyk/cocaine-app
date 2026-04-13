@@ -85,7 +85,7 @@ export function HomeCards() {
             <IconBadge src={I.bell} />
             {/* Body LG — 16px Regular */}
             <p className="flex-1 text-[16px] font-normal leading-6 text-[#151515]">
-              7 dager til slutt — du er klar!
+              7 days until quit — you're ready!
             </p>
           </div>
         </GlassSurface>
@@ -100,7 +100,7 @@ export function HomeCards() {
               <IconBadge src={I.clock} />
               {/* Body SM Medium — 14px */}
               <span className="text-[14px] font-medium leading-5 text-[#0e1e18]">
-                Nedtelling
+                Countdown
               </span>
             </div>
             {/* value block */}
@@ -110,7 +110,7 @@ export function HomeCards() {
                 {elapsed}
               </p>
               <p className="text-[14px] font-normal leading-5 text-[#0e1e18]">
-                Sluttdato: 8 april 2026
+                Quit date: 8 April 2026
               </p>
             </div>
           </div>
@@ -124,7 +124,7 @@ export function HomeCards() {
             <div className="flex items-center gap-2">
               <IconBadge src={I.coins} />
               <span className="text-[14px] font-medium leading-5 text-[#0e1e18]">
-                Sparing
+                Savings
               </span>
             </div>
             <div className="flex flex-col gap-2">
@@ -132,7 +132,7 @@ export function HomeCards() {
                 {savings}
               </p>
               <p className="text-[14px] font-normal leading-5 text-[#0e1e18]">
-                Denne måneden
+                This month
               </p>
             </div>
           </div>
@@ -148,11 +148,11 @@ export function HomeCards() {
             <div className="flex-1 min-w-0">
               {/* Body LG Medium — 16px */}
               <p className="text-[16px] font-medium leading-6 text-[#151515]">
-                Vi er her tirsdager, kl 15–18
+                We're here Tuesdays, 3–6 pm
               </p>
               {/* Body SM — 14px */}
               <p className="text-[14px] font-normal leading-5 text-[#151515]">
-                Start en chat når som helst
+                Start a chat anytime
               </p>
             </div>
             {/* Chevron — 10×18 viewBox, render proportionally */}
@@ -176,7 +176,7 @@ export function HomeCards() {
             <div className="flex items-center gap-2">
               <IconBadge src={I.phone} variant="peach" />
               <span className="flex-1 text-[14px] font-medium leading-5 text-[#0e1e18]">
-                Krisenummere
+                Crisis numbers
               </span>
             </div>
             <div className="flex flex-col gap-2">
@@ -186,7 +186,7 @@ export function HomeCards() {
               </p>
               <ProgressBar fillPct={8.56} trackColor="#ffc8be" fillColor="#d84830" />
               <p className="text-[14px] font-normal leading-5 text-[#0e1e18]">
-                Sist: 3 april, 13:45
+                Last: 3 April, 1:45 pm
               </p>
             </div>
           </div>
@@ -200,7 +200,7 @@ export function HomeCards() {
             <div className="flex items-center gap-2">
               <IconBadge src={I.program} />
               <span className="flex-1 text-[14px] font-medium leading-5 text-[#0e1e18]">
-                Program
+                Programme
               </span>
             </div>
             <div className="flex flex-col gap-2">
@@ -210,7 +210,7 @@ export function HomeCards() {
               </p>
               <ProgressBar fillPct={8.56} trackColor="#88d8ce" fillColor="#0a7268" />
               <p className="text-[14px] font-normal leading-5 text-[#0e1e18]">
-                Startdato: 3 april 2026, Uke 1 av 12
+                Start date: 3 April 2026, Week 1 of 12
               </p>
             </div>
           </div>
@@ -224,10 +224,10 @@ export function HomeCards() {
             <IconBadge src={I.pencil} />
             <div className="flex-1 min-w-0">
               <p className="text-[16px] font-medium leading-6 text-[#151515]">
-                Dagens tema
+                Topic of the day
               </p>
               <p className="text-[14px] font-normal leading-5 text-[#151515]">
-                Hva brakte deg hit i dag?
+                What brought you here today?
               </p>
             </div>
           </div>

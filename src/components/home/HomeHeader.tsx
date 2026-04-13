@@ -101,7 +101,7 @@ export function HomeHeader() {
         <div className="flex h-[76px] items-center justify-between px-4 py-2 pointer-events-auto">
           {/* Avatar button */}
           <motion.button
-            aria-label="Profil"
+            aria-label="Profile"
             whileTap={{ scale: 0.92 }}
             className="relative h-[60px] w-[60px] shrink-0 rounded-full overflow-hidden shadow-[0px_8px_40px_0px_rgba(0,0,0,0.12)]"
           >
@@ -127,7 +127,7 @@ export function HomeHeader() {
               src={asset("/figma-assets/header-menu.svg")}
               iconWidth={26}
               iconHeight={18}
-              label="Meny"
+              label="Menu"
             />
           </div>
         </div>

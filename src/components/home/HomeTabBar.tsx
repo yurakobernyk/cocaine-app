@@ -12,7 +12,7 @@ export type TabId = "home" | "diary" | "overview";
 const TABS: { id: TabId; label: string; icon: string; w: number; h: number }[] = [
   {
     id: "home",
-    label: "Hjem",
+    label: "Home",
     icon: asset("/figma-assets/tab-home.svg"),
     // viewBox 23.0×23.86 — render at natural proportions inside 28×28 space
     w: 23,
@@ -20,7 +20,7 @@ const TABS: { id: TabId; label: string; icon: string; w: number; h: number }[] =
   },
   {
     id: "diary",
-    label: "Dagbok",
+    label: "Diary",
     icon: asset("/figma-assets/tab-diary.svg"),
     // viewBox 23×25.33
     w: 22,
@@ -28,7 +28,7 @@ const TABS: { id: TabId; label: string; icon: string; w: number; h: number }[] =
   },
   {
     id: "overview",
-    label: "Oversikt",
+    label: "Overview",
     icon: asset("/figma-assets/tab-overview.svg"),
     // viewBox 25.35×25.33 — nearly square
     w: 24,
@@ -74,7 +74,7 @@ export function HomeTabBar({ active, onChange }: Props) {
       <div
         ref={containerRef}
         role="tablist"
-        aria-label="Navigasjon"
+        aria-label="Navigation"
         /* Figma: backdrop-blur-[15px], bg white/80, shadow */
         className="relative flex flex-1 items-center rounded-full p-1"
         style={{
@@ -125,7 +125,7 @@ export function HomeTabBar({ active, onChange }: Props) {
        * Icon: 28×28 inside, viewBox 18.33×18.33 (near square)
        */}
       <motion.button
-        aria-label="SOS — Kriseknapp"
+        aria-label="SOS — Crisis button"
         whileTap={{ scale: 0.88 }}
         transition={spring}
         className="flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-full shadow-[0px_8px_40px_0px_rgba(0,0,0,0.12)]"

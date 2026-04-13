@@ -21,7 +21,7 @@ const panelVariants = {
 function PlaceholderPanel({ title }: { title: string }) {
   return (
     <div className="flex h-[400px] items-center justify-center">
-      <p className="text-body-lg text-m2-text-secondary">{title} — kommer snart</p>
+      <p className="text-body-lg text-m2-text-secondary">{title} — coming soon</p>
     </div>
   );
 }
@@ -64,10 +64,10 @@ export default function M2HomePage() {
           transition={{ duration: 0.3, delay: 0.1 }}
         >
           <p className="text-[17px] font-semibold leading-6 text-[#525252]">
-            Hei, {profile.name}!
+            Hey, {profile.name}!
           </p>
           <h1 className="text-[34px] font-bold leading-10 tracking-[-0.5px] text-[#151515]">
-            Positiv i dag
+            Feeling good today
           </h1>
         </motion.div>
 
